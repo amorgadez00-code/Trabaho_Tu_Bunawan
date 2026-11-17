@@ -68,4 +68,3 @@ export const initialApplications = [
 export const getJob = (id) => jobs.find((j) => j.id === id);
 export const getEmployer = (id) => employers.find((e) => e.id === id);
 export const getCategory = (id) => categories.find((c) => c.id === id);
-
