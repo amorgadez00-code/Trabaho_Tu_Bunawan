@@ -10,7 +10,7 @@ import { useApp } from '../context/AppContext';
 const CLOSED = ['rejected', 'withdrawn'];
 
 export default function ApplicationsScreen({ navigation }) {
-  const { applications, findJob, findEmployer } = useApp();
+  const { myApplications: applications, findJob, findEmployer } = useApp();
   const [tab, setTab] = useState('active');
 
   const active = applications.filter((a) => !CLOSED.includes(a.status));
