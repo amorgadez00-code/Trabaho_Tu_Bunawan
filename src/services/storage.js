@@ -10,6 +10,11 @@ export const KEYS = {
   barangays: 'tb:barangays',
   holidays: 'tb:holidays',
   seenWelcome: 'tb:seenWelcome',
+  jobs: 'tb:jobs',
+  profiles: 'tb:profiles',
+  credentials: 'tb:credentials',
+  reports: 'tb:reports',
+  seedVersion: 'tb:seedVersion',
 };
 
 // CREATE / UPDATE: write a value
