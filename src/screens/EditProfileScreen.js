@@ -8,14 +8,14 @@ import { useApp } from '../context/AppContext';
 
 // UPDATE operation: edit the saved profile. The barangay list comes from the PSGC API.
 export default function EditProfileScreen({ navigation }) {
-  const { user, updateUser } = useApp();
+  const { user, updateUser, isEmployer } = useApp();
   const { barangays, loading, error } = useBarangays();
   const [form, setForm] = useState({ name: user?.name || '', phone: user?.phone || '', barangay: user?.barangay || '' });
   const [errors, setErrors] = useState({});
 
   const save = () => {
     const e = {};
-    if (!form.name.trim()) e.name = 'Full name is required';
+    if (!form.name.trim()) e.name = isEmployer ? 'Business or owner name is required' : 'Full name is required';
     if (!/^09\d{9}$/.test(form.phone)) e.phone = 'Use an 11-digit number starting with 09';
     if (!form.barangay) e.barangay = 'Choose your barangay';
     setErrors(e);
@@ -31,7 +31,7 @@ export default function EditProfileScreen({ navigation }) {
           <Avatar text={initials(form.name)} size={84} bg={colors.forest} fg={colors.gold} />
           <Text style={{ color: colors.muted, marginTop: 8 }}>{user?.email}</Text>
         </View>
-        <Field label="Full name" value={form.name} onChangeText={(t) => setForm({ ...form, name: t })} error={errors.name} />
+        <Field label={isEmployer ? 'Business or owner name' : 'Full name'} value={form.name} onChangeText={(t) => setForm({ ...form, name: t })} error={errors.name} />
         <Field label="Mobile number" value={form.phone} onChangeText={(t) => setForm({ ...form, phone: t })} keyboardType="numeric" maxLength={11} error={errors.phone} />
         <Text style={styles.label}>Barangay {loading ? '(updating list...)' : ''}</Text>
         {!!error && <Text style={[styles.error, { marginBottom: 6 }]}>Could not update the list: {error}</Text>}
