@@ -46,7 +46,7 @@ function RoleCard({ selected, accent, tint, icon, title, sub, onPress }) {
 }
 
 export default function RegisterScreen({ navigation, route }) {
-  const { setUser } = useApp();
+  const { register } = useApp();
   const { barangays, loading, error: brgyError, reload } = useBarangays();   // API data (PSGC)
   const [form, setForm] = useState({ role: route.params?.role === 'employer' ? 'employer' : 'jobseeker', name: '', email: '', phone: '', password: '', barangay: '' });
   const [errors, setErrors] = useState({});
@@ -68,8 +68,9 @@ export default function RegisterScreen({ navigation, route }) {
     if (!form.barangay) e.barangay = 'Choose your barangay';
     setErrors(e);
     if (Object.keys(e).length) return;
-    const { password, ...safeUser } = form;   // never save the password on the device
-    setUser({ ...safeUser, name: form.name.trim() });
+    // the password is hashed by the context, never saved as plain text; the chosen role decides which side opens
+    const result = register({ ...form, name: form.name.trim() });
+    if (!result.ok) { setErrors({ email: result.error }); return; }
     Alert.alert('Account created', 'Welcome to Trabaho Tu Bunawan!');   // the app opens the main screens automatically
   };
 
