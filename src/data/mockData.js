@@ -60,9 +60,23 @@ export const jobs = [
     qualifications: ['Honest and hardworking.', 'Experience preferred.'] },
 ];
 
+// Ready-made accounts so you can test both sides without registering (tap them on the Login screen).
+// The employer demo owns the Sari-Sari Store (employer id 2), so it already has jobs and applicants.
+export const DEMO_ACCOUNTS = [
+  { label: 'Job Seeker', password: 'demo123',
+    profile: { role: 'jobseeker', name: 'Juan Dela Cruz', email: 'jobseeker@demo.com', phone: '09171234567', barangay: 'Bunawan Brook' } },
+  { label: 'Employer', password: 'demo123',
+    profile: { role: 'employer', employerId: 2, name: 'Sari-Sari Store', email: 'employer@demo.com', phone: '09786567400', barangay: 'Bunawan Brook' } },
+];
+
+// applicantEmail ties an application to the job seeker who sent it
 export const initialApplications = [
-  { id: 1, jobId: 1, name: 'Juan Dela Cruz', phone: '09171234567', message: 'I am interested and available immediately.', status: 'shortlisted', appliedAt: '2026-11-02' },
-  { id: 2, jobId: 4, name: 'Juan Dela Cruz', phone: '09171234567', message: 'I have experience caring for my younger siblings.', status: 'pending', appliedAt: '2026-11-05' },
+  { id: 1, jobId: 1, name: 'Juan Dela Cruz', phone: '09171234567', applicantEmail: 'jobseeker@demo.com', message: 'I am interested and available immediately.', status: 'shortlisted', appliedAt: '2026-11-02' },
+  { id: 2, jobId: 4, name: 'Juan Dela Cruz', phone: '09171234567', applicantEmail: 'jobseeker@demo.com', message: 'I have experience caring for my younger siblings.', status: 'pending', appliedAt: '2026-11-05' },
+  // sample applicants for the demo employer (Sari-Sari Store)
+  { id: 3, jobId: 1, name: 'Maria Santos', phone: '09201112233', applicantEmail: 'maria@demo.com', message: 'I live near the store and can start next week.', status: 'pending', appliedAt: '2026-11-18' },
+  { id: 4, jobId: 3, name: 'Pedro Reyes', phone: '09305556677', applicantEmail: 'pedro@demo.com', message: 'I worked as a cashier at a hardware store for 1 year.', status: 'reviewed', appliedAt: '2026-11-16' },
+  { id: 5, jobId: 1, name: 'Ana Lopez', phone: '09175558899', applicantEmail: 'ana@demo.com', message: 'Fresh graduate, willing to learn.', status: 'pending', appliedAt: '2026-11-20' },
 ];
 
 export const getJob = (id) => jobs.find((j) => j.id === id);
