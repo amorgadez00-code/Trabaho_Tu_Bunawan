@@ -16,8 +16,8 @@ const TYPES = ['Full-time', 'Part-time', 'Contract'];
 // The barangay choices come from the PSGC API.
 export default function PostJobScreen({ navigation, route }) {
   const postId = route.params?.postId;                // PARAM (edit mode)
-  const { user, postedJobs, addPost, updatePost, myEmployerId } = useApp();
-  const editing = postedJobs.find((p) => p.id === postId);
+  const { user, findJob, addPost, updatePost, myEmployerId } = useApp();
+  const editing = postId ? findJob(postId) : undefined;
   const { barangays, loading, error: brgyError } = useBarangays();
   const { getHoliday } = useHolidays();                // Philippine holidays from Nager.Date
 
@@ -88,6 +88,7 @@ export default function PostJobScreen({ navigation, route }) {
         responsibilities: [],
         studentFriendly: false,
         featured: false,
+        closed: false,
         posted: true,
         employer: {
           name: user.name, type: 'Local Employer', verified: 'Local Employer',
