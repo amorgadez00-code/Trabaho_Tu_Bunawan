@@ -9,7 +9,7 @@ import { initials, greeting } from '../utils/format';
 import { useApp } from '../context/AppContext';
 
 export default function HomeScreen({ navigation }) {
-  const { user, applications, savedIds, allJobs, isEmployer } = useApp();
+  const { user, myApplications: applications, savedIds, allJobs } = useApp();
   const jobs = allJobs;
   const featured = jobs.filter((j) => j.featured);
   const firstName = user?.name?.split(' ')[0] || 'there';
@@ -73,7 +73,6 @@ export default function HomeScreen({ navigation }) {
             <ListRow icon="storefront-outline" tint={[colors.blueSoft, colors.blue]} title="Verified employers" subtitle="Local businesses and households with a Verified badge" onPress={() => navigation.navigate('Employers')} />
             <ListRow icon="shield-checkmark-outline" tint={[colors.goldSoft, '#8A6200']} title="Safety tips" subtitle="How to spot a fake job offer" onPress={() => navigation.navigate('Safety')} />
             <ListRow icon="location-outline" tint={[colors.mint, colors.green]} title="Barangays of Bunawan" subtitle="Where the jobs are" onPress={() => navigation.navigate('Barangays')} />
-            {isEmployer && <ListRow icon="reader-outline" tint={[colors.mint, colors.green]} title="My job posts" subtitle="Manage the jobs you posted" onPress={() => navigation.navigate('MyPosts')} />}
           </ListGroup>
         </ScrollView>
       </Sheet>
