@@ -6,7 +6,7 @@ import { initials } from '../utils/format';
 import { useApp } from '../context/AppContext';
 
 export default function ProfileScreen({ navigation }) {
-  const { user, setUser, clearCache, isEmployer } = useApp();
+  const { user, setUser, clearCache, isEmployer, myEmployerId } = useApp();
 
   // Clearing the user switches the app back to the Login / Welcome screens automatically
   const logout = () => setUser(null);
@@ -37,13 +37,13 @@ export default function ProfileScreen({ navigation }) {
 
           <SectionTitle title="Account" style={{ marginTop: 22 }} />
           <ListGroup>
-            <ListRow icon="create-outline" title="Edit profile" subtitle="Name, mobile number and barangay" onPress={() => navigation.navigate('EditProfile')} />
-            {isEmployer && <ListRow icon="reader-outline" title="My job posts" subtitle="Post, edit or remove your jobs" onPress={() => navigation.navigate('MyPosts')} />}
+            <ListRow icon="create-outline" title="Edit profile" subtitle={isEmployer ? "Business name, mobile number and barangay" : "Name, mobile number and barangay"} onPress={() => navigation.navigate('EditProfile')} />
+            {isEmployer && <ListRow icon="storefront-outline" tint={[colors.blueSoft, colors.blue]} title="Public business page" subtitle="How job seekers see your business" onPress={() => navigation.navigate('EmployerDetails', { employerId: myEmployerId })} />}
           </ListGroup>
 
           <SectionTitle title="Help and data" style={{ marginTop: 22 }} />
           <ListGroup>
-            <ListRow icon="shield-checkmark-outline" tint={[colors.goldSoft, '#8A6200']} title="Safety tips" subtitle="How to spot a fake job offer" onPress={() => navigation.navigate('Safety')} />
+            <ListRow icon="shield-checkmark-outline" tint={[colors.goldSoft, '#8A6200']} title="Safety tips" subtitle={isEmployer ? 'Hiring safely and fairly' : 'How to spot a fake job offer'} onPress={() => navigation.navigate('Safety')} />
             <ListRow
               icon="cloud-download-outline"
               tint={[colors.bg, colors.muted]}
