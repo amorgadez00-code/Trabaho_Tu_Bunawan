@@ -27,8 +27,6 @@ export default function SplashScreen({ onFinish, minDuration = 2200 }) {
         <Image source={require('../../assets/Logo.jpg')} style={s.logo} resizeMode="contain" />
       </Animated.View>
       <Animated.View style={{ opacity: textOpacity, alignItems: 'center' }}>
-        <Text style={s.title}>Trabaho Tu Bunawan</Text>
-        <Text style={s.tagline}>{TAGLINE}</Text>
       </Animated.View>
     </View>
   );
