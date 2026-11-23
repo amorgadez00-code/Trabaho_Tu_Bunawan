@@ -10,7 +10,7 @@ import { useApp } from '../context/AppContext';
 
 export default function JobDetailsScreen({ navigation, route }) {
   const { jobId } = route.params;            // PARAM RECEIVED
-  const { savedIds, toggleSaved, hasApplied, user, isEmployer, findJob, findEmployer } = useApp();
+  const { savedIds, toggleSaved, hasApplied, user, isEmployer, findJob, findEmployer, myEmployerId } = useApp();
   const insets = useSafeAreaInsets();
   const job = findJob(jobId);
 
@@ -23,6 +23,7 @@ export default function JobDetailsScreen({ navigation, route }) {
   const emp = findEmployer(job.employerId);
   const saved = savedIds.includes(job.id);
   const applied = hasApplied(job.id);
+  const own = isEmployer && job.employerId === myEmployerId;   // an employer looking at their own post
 
   const onApply = () => {
     if (isEmployer) {
@@ -76,18 +77,25 @@ export default function JobDetailsScreen({ navigation, route }) {
             </Section>
           )}
 
-          <Pressable style={{ marginTop: 22, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }} onPress={() => Alert.alert('Report sent', 'Thank you. Our admin team will review this job post.')}>
+          {!own && <Pressable style={{ marginTop: 22, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }} onPress={() => Alert.alert('Report sent', 'Thank you. Our admin team will review this job post.')}>
             <Ionicons name="flag-outline" size={16} color={colors.danger} />
             <Text style={{ color: colors.danger, marginLeft: 6, fontWeight: '600' }}>Report this job</Text>
-          </Pressable>
+          </Pressable>}
         </View>
       </ScrollView>
 
       {/* Action bar stays in reach while you read */}
-      <View style={{ flexDirection: 'row', backgroundColor: '#fff', borderTopWidth: 1, borderTopColor: colors.line, paddingHorizontal: 16, paddingTop: 12, paddingBottom: Math.max(insets.bottom, 12) }}>
-        <Button title={saved ? 'Saved' : 'Save'} icon={saved ? 'bookmark' : 'bookmark-outline'} variant={saved ? 'soft' : 'outline'} style={{ flex: 1, marginRight: 10 }} onPress={() => toggleSaved(job.id)} />
-        <Button title={applied ? 'Already applied' : 'Apply now'} variant={applied ? 'soft' : 'primary'} style={{ flex: 2 }} disabled={applied} onPress={onApply} />
-      </View>
+      {own ? (
+        <View style={{ flexDirection: 'row', backgroundColor: '#fff', borderTopWidth: 1, borderTopColor: colors.line, paddingHorizontal: 16, paddingTop: 12, paddingBottom: Math.max(insets.bottom, 12) }}>
+          <Button title="Edit post" icon="create-outline" variant="outline" style={{ flex: 1, marginRight: 10 }} onPress={() => navigation.navigate('PostJob', { postId: job.id })} />
+          <Button title="View applicants" icon="people-outline" style={{ flex: 1.4 }} onPress={() => navigation.navigate('EmployerMain', { screen: 'Applicants', params: { jobId: job.id, stamp: Date.now() } })} />
+        </View>
+      ) : isEmployer ? null : (
+        <View style={{ flexDirection: 'row', backgroundColor: '#fff', borderTopWidth: 1, borderTopColor: colors.line, paddingHorizontal: 16, paddingTop: 12, paddingBottom: Math.max(insets.bottom, 12) }}>
+          <Button title={saved ? 'Saved' : 'Save'} icon={saved ? 'bookmark' : 'bookmark-outline'} variant={saved ? 'soft' : 'outline'} style={{ flex: 1, marginRight: 10 }} onPress={() => toggleSaved(job.id)} />
+          <Button title={job.closed ? 'Hiring closed' : applied ? 'Already applied' : 'Apply now'} variant={applied || job.closed ? 'soft' : 'primary'} style={{ flex: 2 }} disabled={applied || job.closed} onPress={onApply} />
+        </View>
+      )}
     </View>
   );
 }
