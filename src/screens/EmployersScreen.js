@@ -2,11 +2,13 @@ import React from 'react';
 import { View, FlatList, Pressable, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, radius } from '../theme';
-import { employers, jobs } from '../data/mockData';
+import { employers } from '../data/mockData';
+import { useApp } from '../context/AppContext';
 import { Avatar, Pill, styles } from '../components/ui';
 import { initials } from '../utils/format';
 
 export default function EmployersScreen({ navigation }) {
+  const { allJobs: jobs } = useApp();
   return (
     <View style={styles.screen}>
       <FlatList
